@@ -3,31 +3,32 @@
 #include <string.h>
 #include<stdlib.h>
 
-struct info {       
+struct value {       
     int number;   
 };
 
-#define ENTRIES 1000   
+#define ENTRIES 10  
 
+// create some strings to put into the hash
 char *haystack[] = { "thread", "spindle", "spool", "needle", "thimble", "" };
 
 int main(int argc, char *argv[])
 {
                                       
-    ENTRY item;
+    ENTRY hashentry;
     ENTRY *result; 
-    (void) hcreate(ENTRIES);
-   int n  = 0;
+    (void) hcreate(ENTRIES);  // create the hash
+   int n  = 0;  // loop over the strings and stop at the empty string
   while(strcmp(haystack[n] ,"")){
-        item.key = haystack[n];
-        item.data = &n;
-        (void) hsearch(item, ENTER);
+        hashentry.key = haystack[n];    // assign the string name as key 
+        hashentry.data = &n;            // assign the number as value
+        (void) hsearch(hashentry, ENTER); // add it to the hash
     n++;
    }
    // Search for the desired key
-        item.key = "needle";
-        result = hsearch(item, FIND);
-         (void)printf("found %s -> haystack element: %d\n",result->key, ((struct info *)result->data)->number);
+        hashentry.key = "needle";
+        result = hsearch(hashentry, FIND);
+         (void)printf("found %s -> haystack element: %d\n",result->key, ((struct value *)result->data)->number);
     hdestroy();
     return 0;
 }
